@@ -18,9 +18,11 @@ $title = $response.ParsedHtml.title
 
 # Liste von zugelassenen Top-Level-Domains und zugehörigen Regex-Patterns
 $allowedDomains = @{
-    "www.heise.de" = '(?s)<p>(.*?)</p>'
-    "www.formel1.de" = '(?s)<p>(.*?)</p>'
     "www.chip.de" = '(?s)<div\sclass="mt-sm">(.*?)</div>'
+    "www.formel1.de" = '(?s)<p>(.*?)</p>'
+    "www.heise.de" = '(?s)<p>(.*?)</p>'
+    "www.pcwelt.de" = '(?s)<p>(.*?)</p>' # am Anfang und Ende ungewollte Linkhinweise etc. aber sonst passt
+    "www.silicon.de" = '(?s)<p>(.*?)</p>'
     # mehr Webseiten hier
 }
 
