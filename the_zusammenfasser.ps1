@@ -29,8 +29,20 @@ if ($allowedDomains.ContainsKey($tld)) {
     $regexPattern = $allowedDomains[$tld]
     Write-Host "Für die Toplevel-Domain $tld wird das Regex-Pattern $regexPattern angewendet."
 
+    $pattern = "$regexPattern"
+    
     # Den Textinhalt aus Tags extrahieren
-    $extractedText = ExtractTextFromTags($content, $regexPattern)
+    $treffer = [regex]::Matches($content, $pattern)
+    $quellcode = foreach ($match in $treffer) {
+        $match.Groups[1].Value
+    }
+
+    # Entfernen von HTML-Tags und Bereinigen des Textes
+    $quellcode = $quellcode -replace "<.*?>", ""
+    $quellcode = [System.Web.HttpUtility]::HtmlDecode($quellcode)
+    $quellcode = $quellcode -replace "\s{2,}", " "
+    $extractedText = $quellcode
+    # $extractedText = ExtractTextFromTags($content, $regexPattern)
 
     # Den Textinhalt und den Titel in separaten Dateien speichern
     $extractedText | Out-File -FilePath $outputFileContent -Encoding utf8
@@ -47,18 +59,19 @@ if ($allowedDomains.ContainsKey($tld)) {
 }
 
 # Funktion zum Extrahieren des Textinhalts aus <p>-Tags
-function ExtractTextFromTags($html, $regex) {
-    $pattern = $regex
-    # $pattern = "(?s)<p>(.*?)</p>"
 
-    Write-Host "Pattern ist $pattern"
-    $treffer = [regex]::Matches($html, $pattern)
-    $text = foreach ($match in $treffer) {
-        $match.Groups[1].Value
-    }
-    # Entfernen von HTML-Tags und Bereinigen des Textes
-    $text = $text -replace "<.*?>", ""
-    $text = [System.Web.HttpUtility]::HtmlDecode($text)
-    $text = $text -replace "\s{2,}", " "
-    return $text
-}
+# function ExtractTextFromTags($html, $regex) {
+#     $pattern = $regex
+#     # $pattern = "(?s)<p>(.*?)</p>"
+
+#     Write-Host "Pattern ist $regex"
+#     $treffer = [regex]::Matches($html, $pattern)
+#     $quellcode = foreach ($match in $treffer) {
+#         $match.Groups[1].Value
+#     }
+#     # Entfernen von HTML-Tags und Bereinigen des Textes
+#     $quellcode = $quellcode -replace "<.*?>", ""
+#     $quellcode = [System.Web.HttpUtility]::HtmlDecode($quellcode)
+#     $quellcode = $quellcode -replace "\s{2,}", " "
+#     return $quellcode
+# }
