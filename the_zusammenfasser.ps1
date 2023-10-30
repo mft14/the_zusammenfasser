@@ -1,9 +1,20 @@
+# Projektarbeit LF10, Powershell Projekt Workshop
+# Funktionierende Domänen
+# <p> Tag
+# https://heise.de
+# https://renoise.com
+# https://formel1.de
+
 # Benutzer zur Eingabe der URL auffordern
 $url = Read-Host -Prompt 'Bitte geben Sie die URL ein:'
 
-$outputFileContent = "Webseite_Inhalt.txt"
-$outputFileTitle = "Webseite_Titel.txt"
+# Konvertieren der URL in ein System.Uri-Objekt
+$uri = New-Object System.Uri($url)
+$tld = $uri.Host
+Write-Host "Die Toplevel-Domain ist: $tld"
 
+# $outputFileContent = "Webseite_Inhalt.txt"
+# $outputFileTitle = "Webseite_Titel.txt"
 
 # Die Webseite herunterladen
 $response = Invoke-WebRequest -Uri $url
@@ -30,8 +41,8 @@ $title = $response.ParsedHtml.title
 $extractedText = ExtractTextFromPTags($content)
 
 # Den Textinhalt und den Titel in separaten Dateien speichern
-$extractedText | Out-File -FilePath $outputFileContent -Encoding utf8
-$title | Out-File -FilePath $outputFileTitle -Encoding utf8
+# $extractedText | Out-File -FilePath $outputFileContent -Encoding utf8
+# $title | Out-File -FilePath $outputFileTitle -Encoding utf8
 
-Write-Host "Der Textinhalt wurde erfolgreich in $outputFileContent gespeichert."
-Write-Host "Der Titel wurde erfolgreich in $outputFileTitle gespeichert."
+# Write-Host "Der Textinhalt wurde erfolgreich in $outputFileContent gespeichert."
+# Write-Host "Der Titel wurde erfolgreich in $outputFileTitle gespeichert."
