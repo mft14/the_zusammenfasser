@@ -59,21 +59,3 @@ if ($allowedDomains.ContainsKey($tld)) {
     Write-Host "Die Toplevel-Domain $tld ist nicht in der Liste der zugelassenen Domains enthalten."
     Exit
 }
-
-# Funktion zum Extrahieren des Textinhalts aus <p>-Tags
-
-# function ExtractTextFromTags($html, $regex) {
-#     $pattern = $regex
-#     # $pattern = "(?s)<p>(.*?)</p>"
-
-#     Write-Host "Pattern ist $regex"
-#     $treffer = [regex]::Matches($html, $pattern)
-#     $quellcode = foreach ($match in $treffer) {
-#         $match.Groups[1].Value
-#     }
-#     # Entfernen von HTML-Tags und Bereinigen des Textes
-#     $quellcode = $quellcode -replace "<.*?>", ""
-#     $quellcode = [System.Web.HttpUtility]::HtmlDecode($quellcode)
-#     $quellcode = $quellcode -replace "\s{2,}", " "
-#     return $quellcode
-# }
