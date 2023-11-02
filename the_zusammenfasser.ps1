@@ -20,7 +20,11 @@ $title = $response.ParsedHtml.title
 $allowedDomains = @{
     "www.chip.de" = '(?s)<div\sclass="mt-sm">(.*?)</div>'
     "www.formel1.de" = '(?s)<p>(.*?)</p>'
+    "www.bild.de" = '(?s)<p>(.*?)</p>'
+    "www.sueddeutsche.de" = '(?s)<p\sclass="\scss-13wylk3"\sdata-manual="paragraph">(.*?)</p>'
+    "www.tagesschau.de" = '(?s)<p\sclass="textabsatz\sm-ten\sm-offset-one\sl-eight\sl-offset-two\scolumns\stwelve">(.*?)</p>'
     "www.heise.de" = '(?s)<p>(.*?)</p>'
+    "www.spiegel.de" = '(?s)<p>(.*?)</p>'
     "www.pcwelt.de" = '(?s)<p>(.*?)</p>' # am Anfang und Ende ungewollte Linkhinweise etc. aber sonst passt
     "www.silicon.de" = '(?s)<p>(.*?)</p>'
     # mehr Webseiten hier
