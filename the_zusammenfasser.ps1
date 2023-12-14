@@ -65,30 +65,25 @@ if ($allowedDomains.ContainsKey($tld)) {
     #
 
     $answer = Read-Host "Möchten Sie den Text jetzt zusammenfassen? (y/n)"
-
     If ($answer -eq "y" -or $answer -eq "Y") {
 
         # ChatGPT startet hier
-        $apiKey = "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"
+        $apiKey = "" # Key hier einfügen
         $headers = @{
             "Content-Type" = "application/json"
             "Authorization" = "Bearer $apiKey"
         }
-
         $body = @{
             prompt = "Hallo. Kannst du folgenden Text zusammenfassen: $extractedText"
             # prompt = "Was ist die Bedeutung des Lebens?"
             max_tokens = 50
+            model = "text-davinci-003"
         } | ConvertTo-Json
-
         $baseUrl = "https://api.openai.com/v1/chat/completions"
         $response = Invoke-RestMethod -Uri $baseUrl -Headers $headers -Method Post -Body $body
-
-        # Verarbeiten Sie die Antwort von OpenAI entsprechend Ihren Anforderungen
         $response.choices[0].text
-
     } Else {
-        Write-Host "Okay, dann nicht. Der extrahierte Text befindet sich in der Datei"
+        Write-Host "Okay, dann nicht. Der extrahierte Text befindet sich in der Datei $outputFileContent."
 
     }
 
