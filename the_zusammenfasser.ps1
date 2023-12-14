@@ -6,8 +6,8 @@ $uri = New-Object System.Uri($url)
 $tld = $uri.Host
 Write-Host "Die Toplevel-Domain ist: $tld"
 
-$outputFileContent = "Webseite_Inhalt.txt"
-$outputFileTitle = "Webseite_Titel.txt"
+$outputFileContent = "Inhalt.txt"
+$outputFileTitle = "Titel.txt"
 
 # Die Webseite herunterladen
 $response = Invoke-WebRequest -Uri $url
@@ -20,6 +20,8 @@ $title = $response.ParsedHtml.title
 $allowedDomains = @{
     "www.bild.de" = '(?s)<p>(.*?)</p>'
     "www.chip.de" = '(?s)<div\sclass="mt-sm">(.*?)</div>'
+    "www.computerbild.de" = '(?s)<div\sclass="steam-react"\sdata-component-name="AutomaticConclusionBox"\sdata-component-props="(.*?)"></div>' 
+    # bei computerbild werden die Texte mal innerhalb, mal außerhalb von Tag Attributen geschrieben.
     "www.focus.de" = '(?s)<p>(.*?)</p>'
     "www.formel1.de" = '(?s)<p>(.*?)</p>'
     "www.heise.de" = '(?s)<p>(.*?)</p>'
@@ -53,35 +55,42 @@ if ($allowedDomains.ContainsKey($tld)) {
 
     # Den Textinhalt und den Titel in separaten Dateien speichern
     $extractedText | Out-File -FilePath $outputFileContent -Encoding utf8
-    $title | Out-File -FilePath $outputFileTitle -Encoding utf8
     Write-Host "Der Textinhalt wurde erfolgreich in $outputFileContent gespeichert."
-    Write-Host "Der Titel wurde erfolgreich in $outputFileTitle gespeichert."
+    # $title | Out-File -FilePath $outputFileTitle -Encoding utf8
+    # Write-Host "Der Titel wurde erfolgreich in $outputFileTitle gespeichert."
 
     # $extractedText = "Hier den extrahierten Text einfügen"
     # $extractedText | Set-Clipboard
     # Write-Host "Der extrahierte Text wurde in die Zwischenablage kopiert."
+    #
 
-    $apiKey = "IHR_API_SCHLÜSSEL_HIER"
+    $answer = Read-Host "Möchten Sie den Text jetzt zusammenfassen? (y/n)"
 
-    $headers = @{
-        "Content-Type" = "application/json"
-        "Authorization" = "Bearer $apiKey"
+    If ($answer -eq "y" -or $answer -eq "Y") {
+
+        # ChatGPT startet hier
+        $apiKey = "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"
+        $headers = @{
+            "Content-Type" = "application/json"
+            "Authorization" = "Bearer $apiKey"
+        }
+
+        $body = @{
+            prompt = "Hallo. Kannst du folgenden Text zusammenfassen: $extractedText"
+            # prompt = "Was ist die Bedeutung des Lebens?"
+            max_tokens = 50
+        } | ConvertTo-Json
+
+        $baseUrl = "https://api.openai.com/v1/chat/completions"
+        $response = Invoke-RestMethod -Uri $baseUrl -Headers $headers -Method Post -Body $body
+
+        # Verarbeiten Sie die Antwort von OpenAI entsprechend Ihren Anforderungen
+        $response.choices[0].text
+
+    } Else {
+        Write-Host "Okay, dann nicht. Der extrahierte Text befindet sich in der Datei"
+
     }
-
-    $body = @{
-        prompt = "Kannst du folgenden Text zusammenfassen: $extractedText"
-        # prompt = "Was ist die Bedeutung des Lebens?"
-        max_tokens = 50
-    } | ConvertTo-Json
-
-    $baseUrl = "https://api.openai.com/v1/chat/completions"
-    $response = Invoke-RestMethod -Uri $baseUrl -Headers $headers -Method Post -Body $body
-
-    # Verarbeiten Sie die Antwort von OpenAI entsprechend Ihren Anforderungen
-    $response.choices[0].text
-
-
-
 
 } else {
     Write-Host "Die Toplevel-Domain $tld ist nicht in der Liste der zugelassenen Domains enthalten."
