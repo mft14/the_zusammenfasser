@@ -17,22 +17,34 @@ $allowedDomains = @{
     # mehr Webseiten hier
 }
 
+Function Open-Website {
+    Write-Host -ForegroundColor Green "Der extrahierte Text wurde in die Zwischenablage kopiert."
+    Read-Host -Prompt 'Drücke Enter, um die Zusammenfassung von OpenAI zu erhalten.'
+
+    Write-Host "Öffne den Browser und navigiere zu https://chat.openai.com"
+    # Start-Process "https://chat.openai.com"
+
+# Python-Skript aufrufen
+    $pythonScriptPath = "keyboard.py"
+    python3 $pythonScriptPath
+}
+
 Function Get-SupportedWebsites {
     Write-Host "Die folgenden Webseiten werden unterstützt:"
     foreach ($domain in $allowedDomains.Keys) {
-        Write-Host $domain
+        Write-Host -ForegroundColor Green $domain
     }
 }
 
 Function Get-SummarizedWebsite {
 
 # Benutzer zur Eingabe der URL auffordern
-$url = Read-Host -Prompt 'Bitte geben Sie die URL ein:'
+$url = Read-Host -Prompt 'Bitte geben Sie die URL ein'
 
 # Konvertieren der URL in ein System.Uri-Objekt
 $uri = New-Object System.Uri($url)
 $tld = $uri.Host
-Write-Host "Die Toplevel-Domain ist: $tld"
+Write-Host -ForegroundColor Green "Die Toplevel-Domain ist: $tld"
 
 $outputFileContent = "Webseite_Inhalt.txt"
 $outputFileTitle = "Webseite_Titel.txt"
@@ -43,7 +55,6 @@ $content = $response.Content
 
 # Den Titel der Webseite extrahieren
 $title = $response.ParsedHtml.title
-
 
 # Überprüfen, ob die TLD in der Liste der zugelassenen Domains enthalten ist
 if ($allowedDomains.ContainsKey($tld)) {
@@ -66,44 +77,36 @@ if ($allowedDomains.ContainsKey($tld)) {
     # $extractedText = ExtractTextFromTags($content, $regexPattern)
 
     # Den Textinhalt und den Titel in separaten Dateien speichern
-    # $extractedText | Out-File -FilePath $outputFileContent -Encoding utf8
-    # $title | Out-File -FilePath $outputFileTitle -Encoding utf8
-    # Write-Host "Der Textinhalt wurde erfolgreich in $outputFileContent gespeichert."
-    # Write-Host "Der Titel wurde erfolgreich in $outputFileTitle gespeichert."
-    # Write-Host "--------------------"
     # Read-Host -Prompt 'Drücke Enter, um den Textinhalt in die Zwischenablage zu kopieren.'
 
     # while ($prompt -ne 1 -and $prompt -ne 2) {
         #Kopiere in Ziwischenablage
         Write-Host ""
-        Write-Host "Wie möchtest du den Text zusammenfassen?"
+        Write-Host -ForegroundColor Green "Wie möchtest du den Text zusammenfassen?"
         Write-Host "1. So kurz wie möglich"
         Write-Host "2. konkreter und längere Zusammenfassung"
+        Write-Host "3. Text nicht zusammenfassen und in Textdatei speichern" 
         $prompt = Read-Host -Prompt 'Wähle eine Option aus:'
 
-        if ($prompt -eq 1) {
+        if ($prompt -eq 1) { #kurze Zusammenfassung
             Set-Clipboard -Value "$($zsmkurz):  $($extractedText)"
-        } elseif ($prompt -eq 2) {
+            Open-Website
+        } elseif ($prompt -eq 2) { #lange Zusammenfassung
             Set-Clipboard -Value "$($zsmlang):  $($extractedText)"
+            Open-Website
+        } elseif ($prompt -eq 3) { # Wenn der Text nicht zusammengefasst werden soll
+            $extractedText | Out-File -FilePath $outputFileContent -Encoding utf8
+            Write-Host -ForegroundColor Green "Der Textinhalt wurde erfolgreich in $outputFileContent gespeichert."
+            Write-Host "--------------------"
         } else {
-            Write-Host "Ungültige Eingabe. Bitte wähle eine Option aus."
+            Write-Host -ForegroundColor -Red "Ungültige Eingabe. Bitte wähle eine Option aus."
         }
     # }
     
     # TODO evtl Absatz bei zsmkurz und dann den Text
+    
 
-    Read-Host -Prompt 'Drücke Enter, um die Zusammenfassung von OpenAI zu erhalten.'
-    Write-Host "Öffne den Browser und navigiere zu https://chat.openai.com"
-    $pythonScriptPath = "keyboard.py"
 
-# Python-Skript aufrufen
-    python3 $pythonScriptPath
-
-    # Start-Process "https://chat.openai.com"
-
-    # $extractedText = "Hier den extrahierten Text einfügen"
-    # $extractedText | Set-Clipboard
-    # Write-Host "Der extrahierte Text wurde in die Zwischenablage kopiert."
     
     try {
         $apiKey = "IHR_API_SCHLÜSSEL_HIER"
