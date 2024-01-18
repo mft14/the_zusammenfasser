@@ -66,15 +66,16 @@ if ($allowedDomains.ContainsKey($tld)) {
     # $extractedText = ExtractTextFromTags($content, $regexPattern)
 
     # Den Textinhalt und den Titel in separaten Dateien speichern
-    $extractedText | Out-File -FilePath $outputFileContent -Encoding utf8
-    $title | Out-File -FilePath $outputFileTitle -Encoding utf8
-    Write-Host "Der Textinhalt wurde erfolgreich in $outputFileContent gespeichert."
-    Write-Host "Der Titel wurde erfolgreich in $outputFileTitle gespeichert."
-    Write-Host "--------------------"
-    Read-Host -Prompt 'Drücke Enter, um den Textinhalt in die Zwischenablage zu kopieren.'
+    # $extractedText | Out-File -FilePath $outputFileContent -Encoding utf8
+    # $title | Out-File -FilePath $outputFileTitle -Encoding utf8
+    # Write-Host "Der Textinhalt wurde erfolgreich in $outputFileContent gespeichert."
+    # Write-Host "Der Titel wurde erfolgreich in $outputFileTitle gespeichert."
+    # Write-Host "--------------------"
+    # Read-Host -Prompt 'Drücke Enter, um den Textinhalt in die Zwischenablage zu kopieren.'
 
     # while ($prompt -ne 1 -and $prompt -ne 2) {
         #Kopiere in Ziwischenablage
+        Write-Host ""
         Write-Host "Wie möchtest du den Text zusammenfassen?"
         Write-Host "1. So kurz wie möglich"
         Write-Host "2. konkreter und längere Zusammenfassung"
@@ -93,7 +94,12 @@ if ($allowedDomains.ContainsKey($tld)) {
 
     Read-Host -Prompt 'Drücke Enter, um die Zusammenfassung von OpenAI zu erhalten.'
     Write-Host "Öffne den Browser und navigiere zu https://chat.openai.com"
-    Start-Process "https://chat.openai.com"
+    $pythonScriptPath = "keyboard.py"
+
+# Python-Skript aufrufen
+    python3 $pythonScriptPath
+
+    # Start-Process "https://chat.openai.com"
 
     # $extractedText = "Hier den extrahierten Text einfügen"
     # $extractedText | Set-Clipboard
@@ -138,13 +144,16 @@ Function Get-Explanation {
 }
 
 while ($isRunning) {
-    Write-Host "Willkommen beim Zusammenfasser. Was möchtest du tun?"
+    Write-Host ""
+    Write-Host -ForegroundColor Green "Willkommen beim Zusammenfasser. Was möchtest du tun?"
     Write-Host "1. Zusammenfassung einer Webseite erstellen"
     Write-Host "2. Liste unterstützter Webseiten anzeigen"
     Write-Host "3. Wie funktioniert The Zusammenfasser?"
     Write-Host "4. Programm beenden"
+    Write-Host ""
 
     $prompt = Read-Host -Prompt 'Wähle eine Option aus:'
+    Write-Host ""
 
     if ($prompt -eq 1) {
         Get-SummarizedWebsite
