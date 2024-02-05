@@ -17,3 +17,12 @@ foreach ($domain in $allowedDomains.Keys) {
 }
 ```
 
+
+### Regex
+Regex steht für Regular Expression.
+Hier mit werden mit bestimmten Symbole ganze Zeichenblöcke angesprochen.
+Die wichtigsten Regex Befehle für unser Projekt:
+
+[Hier ein Online Regex Live-Übersetzer zum Testen](https://regexr.com)
+
+
