@@ -1,6 +1,5 @@
 # Aufgaben
 
-
 ### 1. Execution möglich machen
 Aufgabe: Schaltet die Execution Policy aus, damit sich Powershell Scripts problemlos ausführen lassen.
 
@@ -16,6 +15,7 @@ Nutzt dazu die Standard Befehle wie Read und Write-Host
 Read-Host --Prompt
 ```
 ### 3. todo
+
 
 
 ### 4. Regex-Patterns

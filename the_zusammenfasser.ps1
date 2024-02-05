@@ -1,6 +1,8 @@
 $zsmkurz = "Kannst du folgenden Text so kurz wie möglich zusammenfassen"
 $zsmlang = "Kannst du folgenden Text etwas konkreter zusammenfassen"
 
+$OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding =
+                    New-Object System.Text.UTF8Encoding
 
 # Liste von zugelassenen Top-Level-Domains und zugehörigen Regex-Patterns
 $allowedDomains = @{
@@ -139,7 +141,7 @@ $isRunning = $true
 
 Function Get-Explanation {
     Write-Host "--------------------"
-    Write-Host "Dieses Skript extrahiert den Textinhalt einer Webseite und kopiert ihn in die Zwischenablage."
+    Write-Host "Das Skript extrahiert den Textinhalt einer Webseite und kopiert ihn in die Zwischenablage."
     Write-Host "Der Textinhalt wird dann von OpenAI zusammengefasst."
     Write-Host "Die Zusammenfassung wird in der Konsole angezeigt und in die Zwischenablage kopiert."
     Write-Host "Die Zusammenfassung kann dann in einem Texteditor eingefügt werden."
