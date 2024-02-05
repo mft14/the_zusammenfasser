@@ -48,6 +48,8 @@ Function Get-SummarizedWebsite {
 
 # Konvertieren der URL in ein System.Uri-Objekt
     $uri = New-Object System.Uri($url)
+    Write-Host = "Die URI ist: $uri"
+
     $tld = $uri.Host
     Write-Host -ForegroundColor Green "Die Toplevel-Domain ist: $tld"
 
@@ -86,11 +88,17 @@ Function Get-SummarizedWebsite {
 
         # while ($prompt -ne 1 -and $prompt -ne 2) {
             #Kopiere in Ziwischenablage
+
+        do {
+
+
             Write-Host ""
             Write-Host -ForegroundColor Green "Wie möchtest du den Text zusammenfassen?"
             Write-Host "1. So kurz wie möglich"
             Write-Host "2. konkreter und längere Zusammenfassung"
             Write-Host "3. Text nicht zusammenfassen und in Textdatei speichern" 
+            Write-Host "4. Text nicht zusammenfassen und in Zwischenablage kopieren" 
+            Write-Host "0. Beende Zusammenfasser" 
             $prompt = Read-Host -Prompt 'Wähle eine Option aus:'
 
             if ($prompt -eq 1) { #kurze Zusammenfassung
@@ -102,10 +110,18 @@ Function Get-SummarizedWebsite {
             } elseif ($prompt -eq 3) { # Wenn der Text nicht zusammengefasst werden soll
                 $extractedText | Out-File -FilePath $outputFileContent -Encoding utf8
                 Write-Host -ForegroundColor Green "Der Textinhalt wurde erfolgreich in $outputFileContent gespeichert."
-                Write-Host "--------------------"
+            } elseif ($prompt -eq 4) { # Unverändert in Zwischenablage kopieren
+                Set-Clipboard -Value $extractedText
+                Write-Host -ForegroundColor Green "Der Textinhalt wurde erfolgreich in die Zwischenablage gespeichert."
+            } elseif ($prompt -eq 0) { # Beenden
+                Write-Host -ForegroundColor Red "Der Zusammenfasser wird beendet. Es wurde keine Zusammenfassung erstellt."
+                $isRunning = $false
+                Exit
             } else {
-                Write-Host -ForegroundColor -Red "Ungültige Eingabe. Bitte wähle eine Option aus."
+                Write-Host -ForegroundColor Red "Ungültige Eingabe. Bitte wähle eine Option aus."
             }
+        } until ($prompt -eq 1 -or $prompt -eq 2 -or $prompt -eq 3 -or $prompt -eq 4 -or $prompt -eq 0)
+
         # }
         
         # TODO evtl Absatz bei zsmkurz und dann den Text
@@ -135,8 +151,6 @@ Function Get-SummarizedWebsite {
     }
 
 } # Function Get-SummarizedWebsite endet hier
-
-############# Hier startet das Skript
 $isRunning = $true
 
 Function Get-Explanation {
@@ -148,6 +162,7 @@ Function Get-Explanation {
     Write-Host "--------------------"
 }
 
+############# Hier startet das Skript
 while ($isRunning) {
     Write-Host ""
     Write-Host -ForegroundColor Green "Willkommen beim Zusammenfasser. Was möchtest du tun?"

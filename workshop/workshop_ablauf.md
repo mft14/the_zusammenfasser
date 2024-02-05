@@ -1,8 +1,9 @@
 # Ablauf des Workshops (in Planung)
 ## Gliederung
 - Sobald der Bildschirm angeschlossen ist, dann meinen Link teilen [https://github.com/mft14/the_zusammenfasser](https://github.com/mft14/the_zusammenfasser)
-- Handout unter Ordner Handout erstellen ( handout.md ) 
 - Sicherheitsvorkehrungen ausstellen
+
+## [Präsentation](https://docs.google.com/presentation/d/1zEBk1-DIqeptbuiET7NPfGqNwOV9pN8XHfc1Cs7KFuQ/edit?usp=sharing)
 
 ## Der Zusammenfasser Powershell Script
 
@@ -14,9 +15,10 @@
 - Was ist der Mehrwert unseres Scripts
     - Es soll Content Creatorn oder Journalisten einen Arbeitsschritt erleichtern, schnell Infos aus Artikeln zu bilden, die sie für ihren Inhalt benötigen.
     - Es soll die Quelle gleich mit angeben
+    - Es soll möglichst schnell und nativ verfügbar sein, ohne große Installation.
 
 - Wie viel Zeit spart man
-    - Dies kommt immer auf den Artikel an
+    - Dies kommt immer auf den Aufbau der Webseite an. Grundsätzlich werden Newsartikel ja mit Bildern und Absätzen sowie Werbung unterbrochen. Das filtert unser Script so gut es geht hinaus und den Feinschliff übernimmt die KI.
 
 - Gibt es Kosten?
     - Es ist derzeit kostenlos, solange ChatGPT 3 für jeden kostenlos verfügbar ist
