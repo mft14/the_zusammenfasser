@@ -14,9 +14,10 @@ Nutzt dazu die Standard Befehle wie Read und Write-Host
 ```
 Read-Host --Prompt
 ```
-### 3. todo
 
-
+### 3. Zwischenablage
+Was ist die Funktion, um einen Text in die Zwischenablage zu kopieren?
+Nutzt dazu [unser Script](../the_zusammenfasser.ps1)
 
 ### 4. Regex-Patterns
 Schreibt eine Regex, die aus einer Webseite nen Inhalt aus `<div class="article">Test</div>` filtert

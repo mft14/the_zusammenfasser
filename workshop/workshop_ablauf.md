@@ -4,7 +4,7 @@
 - Handout unter Ordner Handout erstellen ( handout.md ) 
 - Sicherheitsvorkehrungen ausstellen
 
-### Der Zusammenfasser Powershell Script
+## Der Zusammenfasser Powershell Script
 
 ### Warum und wozu?
 - Warum dieses Script
@@ -23,6 +23,7 @@
     - Kosten kann es für eine derzeit noch entwickelte Pro-Version geben, die gebraucht wird, um die API von ChatGPT zu nutzen
 
 - Was sind die technischen Voraussetzungen
+    - Vorbereitungen aus dem Handout installiert
     - Windows
         - Execution Policy ausstellen
     - Linux Setup
