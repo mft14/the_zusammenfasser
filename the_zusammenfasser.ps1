@@ -42,16 +42,23 @@ Function Get-SupportedWebsites {
 }
 
 Function Get-SummarizedWebsite {
-
+    while ($url -notmatch "^(http|https)://") {
+        try {
 # Benutzer zur Eingabe der URL auffordern
-    $url = Read-Host -Prompt 'Bitte geben Sie die URL ein'
+            $url = Read-Host -Prompt 'Bitte geben Sie die URL ein'
 
 # Konvertieren der URL in ein System.Uri-Objekt
-    $uri = New-Object System.Uri($url)
-    Write-Host = "Die URI ist: $uri"
+            $uri = New-Object System.Uri($url)
+            Write-Host = "Die URI ist: $uri"
 
-    $tld = $uri.Host
-    Write-Host -ForegroundColor Green "Die Toplevel-Domain ist: $tld"
+            $tld = $uri.Host
+            Write-Host -ForegroundColor Green "Die Toplevel-Domain ist: $tld"
+
+        } catch {
+            Write-Host -ForegroundColor Red "Die eingegebene URL ist ungültig. Bitte geben Sie eine gültige URL ein."
+        }
+    }
+
 
     $outputFileContent = "Webseite_Inhalt.txt"
     $outputFileTitle = "Webseite_Titel.txt"
