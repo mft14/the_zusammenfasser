@@ -42,6 +42,7 @@ Function Get-SupportedWebsites {
 }
 
 Function Get-SummarizedWebsite {
+    # URL-Validierung
     while ($url -notmatch "^(http|https)://") {
         try {
 # Benutzer zur Eingabe der URL auffordern
@@ -51,6 +52,7 @@ Function Get-SummarizedWebsite {
             $uri = New-Object System.Uri($url)
             Write-Host = "Die URI ist: $uri"
 
+            # Extrahieren der Toplevel-Domain
             $tld = $uri.Host
             Write-Host -ForegroundColor Green "Die Toplevel-Domain ist: $tld"
 
@@ -89,7 +91,6 @@ Function Get-SummarizedWebsite {
         $quellcode = $quellcode -replace "\s{2,}", " "
         $extractedText = $quellcode
         # $extractedText = ExtractTextFromTags($content, $regexPattern)
-
         # Den Textinhalt und den Titel in separaten Dateien speichern
         # Read-Host -Prompt 'Drücke Enter, um den Textinhalt in die Zwischenablage zu kopieren.'
 
