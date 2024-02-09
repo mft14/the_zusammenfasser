@@ -2,7 +2,7 @@
 $zsmkurz = "Kannst du folgenden Text so kurz wie möglich zusammenfassen"
 $zsmlang = "Kannst du folgenden Text etwas konkreter zusammenfassen"
 
-# Umlaute richtig darstellen
+# Umlaute richtig darstellen (todo)
 $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding =
                     New-Object System.Text.UTF8Encoding
 
@@ -42,7 +42,7 @@ Function Get-SupportedWebsites {
 }
 
 Function Get-SummarizedWebsite {
-    # URL-Validierung
+    # URL-Validierung, erlaube nur http und https
     while ($url -notmatch "^(http|https)://") {
         try {
 # Benutzer zur Eingabe der URL auffordern
@@ -53,6 +53,7 @@ Function Get-SummarizedWebsite {
             Write-Host = "Die URI ist: $uri"
 
             # Extrahieren der Toplevel-Domain
+            # uri.Host gibt die Host-Adresse zurück, z.B. www.bild.de
             $tld = $uri.Host
             Write-Host -ForegroundColor Green "Die Toplevel-Domain ist: $tld"
 
@@ -86,9 +87,9 @@ Function Get-SummarizedWebsite {
         }
 
         # Entfernen von HTML-Tags und Bereinigen des Textes
-        $quellcode = $quellcode -replace "<.*?>", ""
-        $quellcode = [System.Web.HttpUtility]::HtmlDecode($quellcode)
-        $quellcode = $quellcode -replace "\s{2,}", " "
+        $quellcode = $quellcode -replace "<.*?>", "" # Entfernen von HTML-Tags
+        $quellcode = [System.Web.HttpUtility]::HtmlDecode($quellcode) # HTML-Entschlüsselung
+        $quellcode = $quellcode -replace "\s{2,}", " " # Entfernen von überflüssigen Leerzeichen
         $extractedText = $quellcode
         # $extractedText = ExtractTextFromTags($content, $regexPattern)
         # Den Textinhalt und den Titel in separaten Dateien speichern
@@ -98,7 +99,6 @@ Function Get-SummarizedWebsite {
             #Kopiere in Ziwischenablage
 
         do {
-
 
             Write-Host ""
             Write-Host -ForegroundColor Green "Wie möchtest du den Text zusammenfassen?"
