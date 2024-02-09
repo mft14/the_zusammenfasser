@@ -66,7 +66,7 @@ Function Get-SummarizedWebsite {
 # Den Titel der Webseite extrahieren
             $title = $response.ParsedHtml.title
 
-            Write-Host -ForegroundColor Red "Die eingegebene URL ist ungültig. Bitte geben Sie eine gültige URL ein."
+            # Write-Host -ForegroundColor Red "Die eingegebene URL ist ungültig. Bitte geben Sie eine gültige URL ein."
     } # while endet hier
 
 # Überprüfen, ob die TLD in der Liste der zugelassenen Domains enthalten ist
