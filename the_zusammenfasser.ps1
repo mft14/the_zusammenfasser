@@ -1,6 +1,9 @@
 # Antwortvariablen
 $zsmkurz = "Kannst du folgenden Text so kurz wie möglich zusammenfassen"
 $zsmlang = "Kannst du folgenden Text etwas konkreter zusammenfassen"
+# Textdateien Namen
+$outputFileContent = "Webseite_Inhalt.txt"
+$outputFileTitle = "Webseite_Titel.txt"
 
 # Umlaute richtig darstellen (todo)
 $OutputEncoding = [console]::InputEncoding = [console]::OutputEncoding =
@@ -57,28 +60,24 @@ Function Get-SummarizedWebsite {
             $tld = $uri.Host
             Write-Host -ForegroundColor Green "Die Toplevel-Domain ist: $tld"
 
+# Die Webseite herunterladen
+            $response = Invoke-WebRequest -Uri $url
+            $content = $response.Content
+
+# Den Titel der Webseite extrahieren
+            $title = $response.ParsedHtml.title
+
         } catch {
             Write-Host -ForegroundColor Red "Die eingegebene URL ist ungültig. Bitte geben Sie eine gültige URL ein."
         }
     }
-
-
-    $outputFileContent = "Webseite_Inhalt.txt"
-    $outputFileTitle = "Webseite_Titel.txt"
-
-# Die Webseite herunterladen
-    $response = Invoke-WebRequest -Uri $url
-    $content = $response.Content
-
-# Den Titel der Webseite extrahieren
-    $title = $response.ParsedHtml.title
 
 # Überprüfen, ob die TLD in der Liste der zugelassenen Domains enthalten ist
     if ($allowedDomains.ContainsKey($tld)) {
         $regexPattern = $allowedDomains[$tld]
         Write-Host "Für die Toplevel-Domain $tld wird das Regex-Pattern $regexPattern angewendet."
 
-        $pattern = "$regexPattern"
+        $pattern = "$regexPattern" #Regex-Pattern anwenden
         
         # Den Textinhalt aus Tags extrahieren
         $treffer = [regex]::Matches($content, $pattern)
@@ -88,7 +87,7 @@ Function Get-SummarizedWebsite {
 
         # Entfernen von HTML-Tags und Bereinigen des Textes
         $quellcode = $quellcode -replace "<.*?>", "" # Entfernen von HTML-Tags
-        $quellcode = [System.Web.HttpUtility]::HtmlDecode($quellcode) # HTML-Entschlüsselung
+        $quellcode = [System.Web.HttpUtility]::HtmlDecode($quellcode) # Wandelt HTML-Entitäten in Zeichen um
         $quellcode = $quellcode -replace "\s{2,}", " " # Entfernen von überflüssigen Leerzeichen
         $extractedText = $quellcode
         # $extractedText = ExtractTextFromTags($content, $regexPattern)
@@ -131,31 +130,9 @@ Function Get-SummarizedWebsite {
         } until ($prompt -eq 1 -or $prompt -eq 2 -or $prompt -eq 3 -or $prompt -eq 4 -or $prompt -eq 0)
 
         # }
-        
-        # TODO evtl Absatz bei zsmkurz und dann den Text
-        
-        try {
-            $apiKey = "IHR_API_SCHLÜSSEL_HIER"
-            $headers = @{
-                "Content-Type" = "application/json"
-                "Authorization" = "Bearer $apiKey"
-            }
-            $body = @{
-                prompt = "Kannst du folgenden Text zusammenfassen: $extractedText"
-                # prompt = "Was ist die Bedeutung des Lebens?"
-                max_tokens = 50
-            } | ConvertTo-Json
-
-            $baseUrl = "https://api.openai.com/v1/chat/completions"
-            $response = Invoke-RestMethod -Uri $baseUrl -Headers $headers -Method Post -Body $body
-            # Verarbeiten Sie die Antwort von OpenAI entsprechend Ihren Anforderungen
-            $response.choices[0].text
-        } catch {
-            Write-Host "Der extrahierte Text konnte nicht in die Zwischenablage kopiert werden."
-        }
 
     } else { # TLD nicht in der Liste der zugelassenen Domains enthalten
-        Write-Host "Die Toplevel-Domain $tld ist nicht in der Liste der zugelassenen Domains enthalten."
+        Write-Host -ForegroundColor Red "Die Toplevel-Domain $tld ist nicht in der Liste der zugelassenen Domains enthalten."
     }
 
 } # Function Get-SummarizedWebsite endet hier
