@@ -47,7 +47,6 @@ Function Get-SupportedWebsites {
 Function Get-SummarizedWebsite {
     # URL-Validierung, erlaube nur http und https
     while ($url -notmatch "^(http|https)://") {
-        try {
 # Benutzer zur Eingabe der URL auffordern
             $url = Read-Host -Prompt 'Bitte geben Sie die URL ein'
 
@@ -67,10 +66,8 @@ Function Get-SummarizedWebsite {
 # Den Titel der Webseite extrahieren
             $title = $response.ParsedHtml.title
 
-        } catch {
             Write-Host -ForegroundColor Red "Die eingegebene URL ist ungültig. Bitte geben Sie eine gültige URL ein."
-        }
-    }
+    } # while endet hier
 
 # Überprüfen, ob die TLD in der Liste der zugelassenen Domains enthalten ist
     if ($allowedDomains.ContainsKey($tld)) {
