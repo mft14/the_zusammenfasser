@@ -26,7 +26,10 @@ In der Variable $quellcode steckt bereits der zusammengefasste Tag mit HTML Zeic
 
 ### 5. Regex-Patterns
 Schreibt eine Regex, die aus einer Webseite nen Inhalt aus `<div class="article">Test</div>` filtert.
+Danach versucht es mit einer eigenen Newsseite.
 
-
-
+### Bonus: Startet das Script selber
+Es kann sein, dass der Text nicht in die Zwischenablage kopiert wird. 
+Das ist entweder ein Problem mit einer alten PowerShell Version.
+Wenn der Rest richtig ausgeführt wird, habt ihr alles richtig gemacht.
 
